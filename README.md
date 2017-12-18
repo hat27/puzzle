@@ -18,7 +18,7 @@ this mode may usefull when we wants to do process outside of our tools (or app)
 1. open "__init__.py" and set **PUZZLE_MODULE_PATH** to environ  
 2. open "test/normal_mode_test.py" and set **PUZZLE_MODULE_PATH** to environ   
 3. run "test/test_normal_mode.py" or "test/test_file_mode.py"  
-※much easier to set to "environment variable"  
+※much easier to set **PUZZLE_MODULE_PATH** to "environment variable"  
 
 
 ## prepare  
