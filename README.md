@@ -22,7 +22,7 @@ this mode may usefull when we wants to do process outside of our tools (or app)
 
 
 ## prepare  
-### 1. module setting like(yml, json)  
+### 1. module setting data like(yml, json)  
    ```
     primary:  
         - name: open file  
@@ -41,13 +41,14 @@ this mode may usefull when we wants to do process outside of our tools (or app)
    ```    
 
 ### 2. input data like  
+
      ``` 
     "primary": {  
                 "open_path": "D:/project/c001/c001.ma"  
                }  
      ``` 
 
-## module  
+## sample module  
 (look "pieces/test" directory)  
 
     #-*- coding: utf8 -*-
