@@ -1,30 +1,54 @@
-"puzzle" is the most simplest job platform for python tools.  
+# "puzzle" is the most simplest job platform for python tools.  
 
-use  
-1. open "__init__.py" and set PUZZLE_MODULE_PATH to environ  
-2. open "test/normal_mode_test.py" and set PUZZLE_MODULE_PATH to environ   
+## description
+"puzzle" needs couple of data.  
+module setting data(calls "piece") and source data.  
+we will write a lot of small "pieces" to solve the problem.  
+  
+"puzzle" has "normal mode" and "file mode".
+
+### normal mode
+just do it on script
+
+### file mode
+just do it from file(s)  
+this mode may usefull when we wants to do process outside of our tools (or app)  
+
+## use  
+1. open "__init__.py" and set **PUZZLE_MODULE_PATH** to environ  
+2. open "test/normal_mode_test.py" and set **PUZZLE_MODULE_PATH** to environ   
 3. run "test/test_normal_mode.py" or "test/test_file_mode.py"  
 ※much easier to set to "environment variable"  
 
 
-prepare  
-1. module set like  
-    "primary": [
-                {  
-                "name": "test",  
-                "piece": "pieces.test.test01", # module path  
-                "description": "" # for log  
-                }
-                ]  
+## prepare  
+### 1. module setting like(yml, json)  
+   ```
+    primary:  
+        - name: open file  
+          piece: pieces.maya.file_open  
+          description: "open file for do some job" # for log   
+   ``` 
+    or
+   ``` 
+    "primary": [  
+        {  
+            "name": "open file",  
+            "piece": "pieces.maya.file_open", # module path  
+            "description": "open file for do some job" # for log  
+        }  
+    ]  
+   ```    
 
-2. data set like  
+### 2. input data like  
+     ``` 
     "primary": {  
                 "open_path": "D:/project/c001/c001.ma"  
                }  
+     ``` 
 
-module  
+## module  
 (look "pieces/test" directory)  
-
 
     #-*- coding: utf8 -*-
     import os
@@ -39,10 +63,12 @@ module
             self.name = _PIECE_NAME_ 
 
         def execute(self):
-            return True, self.pass_data, message # simple message for user
+            return True, self.pass_data, message
 
 
-thank you.
+## licence  
+MIT licence  
 
-Gou Hattori
-hatbot27@gmail.com
+## author  
+Gou Hattori  
+hatbot27@gmail.com  
