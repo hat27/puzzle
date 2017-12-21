@@ -4,8 +4,9 @@ import os
 import sys
 
 
-module_path = "somewhere" 
-sys.path.append(module_path)
+module_path = os.path.join(__file__, "../../../")
+if not module_path in sys.path:
+  sys.path.append(module_path)
 
 sys.dont_write_bytecode = True
 
