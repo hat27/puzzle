@@ -6,27 +6,31 @@ import sys
 import logging.config
 from logging import getLogger
 
-from . import pz_env
+from . import env as pz_env
 
 class Log(object):
-    def __init__(self, name=None, remove=False, **args):
+    def __init__(self, name=None, new=False, **args):
+        print name
         if name is None:
             name = "unknown"
 
         self.name = name
-        if remove:
+        if new:
             previous_logger = getLogger(self.name)
             for handler in previous_logger.handlers[::-1]:
-                self.logger.removeHandler(handler)
+                try:
+                    self.logger.removeHandler(handler)
+                except:
+                    pass
 
         replace_log_config = args.get("replace_log_config", {})
         replace_log_config["$NAME"] = name
-        path = self.get_log_config(replace_log_config, args.get("force", True))
+        path = self.get_log_config(replace_log_config, args.get("update_config", True))
         logging.config.fileConfig(path)
         self.logger = getLogger(self.name)
         self.logger.propagate = False
 
-    def get_log_config(self, replace_log_config, force=True):
+    def get_log_config(self, replace_log_config, update_config=True):
         def _replace(w, replace_log_config):
             for k, v in replace_log_config.items():
                 if k in w:
@@ -37,8 +41,9 @@ class Log(object):
         save_path = "%s/%s.log" % (pz_env.get_log_directory(), self.name)
         replace_log_config["$SAVEFILE"] = save_path
         template = pz_env.get_log_template()
+
         if os.path.exists(path):
-            if not force:
+            if not update_config:
                 return path
 
         if not os.path.exists(os.path.dirname(path)):
@@ -55,5 +60,5 @@ class Log(object):
 if __name__ == "__main__":
     import sys
     sys.path.append("G:/works")
-    x = Log("XXXXXX", remove=True, force=True)
+    x = Log("XXXXXX", new=True, update_config=True)
     x.logger.debug("test")
