@@ -3,11 +3,11 @@ import os
 
 from puzzle.Piece import Piece
 
-_PIECE_NAME_ = "Test01"
+_PIECE_NAME_ = "OpenFile"
 
-class Test01(Piece):
+class OpenFile(Piece):
     def __init__(self, **args):
-        super(Test01, self).__init__(**args)
+        super(OpenFile, self).__init__(**args)
         self.name = _PIECE_NAME_
 
     def execute(self):

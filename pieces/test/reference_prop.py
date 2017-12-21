@@ -3,11 +3,11 @@ import os
 
 from puzzle.Piece import Piece
 
-_PIECE_NAME_ = "Test02"
+_PIECE_NAME_ = "ReferenceProp"
 
-class Test02(Piece):
+class ReferenceProp(Piece):
     def __init__(self, **args):
-        super(Test02, self).__init__(**args)
+        super(ReferenceProp, self).__init__(**args)
         self.name = _PIECE_NAME_
 
     def execute(self):
@@ -16,6 +16,8 @@ class Test02(Piece):
             self.logger.debug("filtered")
             return True, self.pass_data, message
 
-        message = "chara referenced: %s" % self.data["asset_path"]
+        message = "prop referenced: %s" % self.data["asset_path"]
         self.logger.debug(message)
+
         return True, self.pass_data, message
+
