@@ -9,10 +9,7 @@ sys.path.append(os.environ["PUZZLE_MODULE_PATH"])
 sys.dont_write_bytecode = True
 
 
-import puzzle.env as env
 from puzzle.Puzzle import Puzzle
-
-print env.get_log_directory()
 
 x = Puzzle("sample", log_force=True)
 pieces = {
@@ -20,7 +17,7 @@ pieces = {
                       {
                        "name": "open",
                        "description": "open file",
-                       "piece": "puzzle.pieces.test.test01",
+                       "piece": "puzzle.pieces.test.open_file",
                        "paint": {
                                  "open_path": "maya_open_path"
                                 }
@@ -30,19 +27,19 @@ pieces = {
                       {
                        "name": "reference chara",
                        "description": "reference chara assets",
-                       "piece": "puzzle.pieces.test.test02",
+                       "piece": "puzzle.pieces.test.reference_chara",
                        "filters": [{"asset_type": "chara"}]
                       },
                       {
                        "name": "reference prop",
                        "description": "reference prop assets",
-                       "piece": "puzzle.pieces.test.test03",
+                       "piece": "puzzle.pieces.test.reference_prop",
                        "filters": [{"asset_type": "prop"}]
                       },
                       {
                        "name": "import fbx",
                        "description": "import fbx",
-                       "piece": "puzzle.pieces.test.test04",
+                       "piece": "puzzle.pieces.test.import_fbx",
                        "filters": [{"asset_type": ["chara", "prop"]}]
                       }                          
                     ],
@@ -50,7 +47,7 @@ pieces = {
                      {
                       "name": "save",
                       "description": "save file",
-                      "piece": "puzzle.pieces.test.test05",
+                      "piece": "puzzle.pieces.test.save_file",
                       "paint": {
                                 "save_path": "maya_save_path"
                                }
