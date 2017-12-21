@@ -3,15 +3,14 @@
 import os
 import sys
 
-os.environ.setdefault("PUZZLE_MODULE_PATH", "somewhere")
-sys.path.append(os.environ["PUZZLE_MODULE_PATH"])
+module_path = "somewhere" 
+sys.path.append(module_path)
 
 sys.dont_write_bytecode = True
 
 import puzzle.env as env
 from puzzle.Puzzle import Puzzle
 
-x = Puzzle("sample", log_force=True)
 
 all_pieces = {
              "test_piece":{
@@ -102,7 +101,7 @@ os.environ["__ALL_PIECES_PATH__"] = "%s/all_pieces.json" % root
 os.environ["__PUZZLE_DATA_PATH__"] = "%s/data.json" % root
 os.environ["__PIECES_KEYS__"] = "test_piece"
 
-x = Puzzle("log_to_temp_path")
+x = Puzzle("log_to_temp_path", new=True, update_log_config=True)
 results = x.play_as_file_mode()
 
 for result in results:

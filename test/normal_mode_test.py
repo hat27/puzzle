@@ -3,15 +3,15 @@
 import os
 import sys
 
-os.environ.setdefault("PUZZLE_MODULE_PATH", "somewhere")
-sys.path.append(os.environ["PUZZLE_MODULE_PATH"])
+
+module_path = "somewhere" 
+sys.path.append(module_path)
 
 sys.dont_write_bytecode = True
 
 
 from puzzle.Puzzle import Puzzle
 
-x = Puzzle("sample", log_force=True)
 pieces = {
           "primary": [
                       {
@@ -87,6 +87,7 @@ data = {
 
        }
 
+x = Puzzle("sample", new=True, update_log_config=True)
 results = x.play(pieces, data, {})
 print
 print
