@@ -21,7 +21,7 @@ just do it from file(s)
 this mode may usefull when we wants to do process outside of our tools (or app)  
   
 ## startup
-run "test/test_normal_mode.py" or "test/test_file_mode.py"
+run "test/test_normal_mode.py" or "test/test_file_mode.py" with python27
   
 ## prepare  
 ### 1. module setting data like(yml, json)  
