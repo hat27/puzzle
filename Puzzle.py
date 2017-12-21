@@ -14,7 +14,10 @@ class Puzzle(object):
     def __init__(self, name="puzzle", file_mode=False, **args):
         self.name = name
         self.order = args.get("order", ["primary", "main", "post"])
-        self.Log = Log.Log(name=self.name, remove=True, force=args.get("log_force", False))
+        self.Log = Log.Log(name=self.name, 
+                           new=True, 
+                           update_config=args.get("update_log_config", False))
+
         self.logger = self.Log.logger
         self.file_mode = file_mode
         pieces_directory = args.get("pieces_directory", False)

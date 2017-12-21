@@ -20,7 +20,7 @@ if not _PLATFORM_:
     _PLATFORM_ = "win"
 
 def get_log_template():
-    return "%s/puzzle/log.template" % os.environ["PUZZLE_MODULE_PATH"]
+    return os.path.normpath(os.path.join(__file__, "../log.template")).replace("\\", "/")
 
 def get_temp_directory(relative=""):
     path = "%s/puzzle/%s" % (_TEMP_PATH_, relative)
@@ -42,7 +42,6 @@ def get_platform():
     return _PLATFORM_
 
 if __name__ == "__main__":
-    os.environ["PUZZLE_MODULE_PATH"] = "G:/works"
     print get_log_template()
     print get_temp_directory()
     print get_temp_directory("temp/test")
