@@ -6,11 +6,7 @@ import sys
 import logging.config
 from logging import getLogger
 
-os.environ["PUZZLE_PATH"] = "G:/works"
-sys.path.append("G:/works/mz/Centrum/python/ctlib/site-packages")
-sys.path.append(os.environ["PUZZLE_PATH"])
-
-import puzzle.env as pz_env
+from . import pz_env
 
 class Log(object):
     def __init__(self, name=None, remove=False, **args):

@@ -11,12 +11,16 @@ from . import Log
 from . import config as pz_config
 
 class Puzzle(object):
-    def __init__(self, name="puzzle", file_mode=False, order=["primary", "main", "post"], log_force=False):
+    def __init__(self, name="puzzle", file_mode=False, **args):
         self.name = name
-        self.order = order
-        self.Log = Log.Log(name=self.name, remove=True, force=log_force)
+        self.order = args.get("order", ["primary", "main", "post"])
+        self.Log = Log.Log(name=self.name, remove=True, force=args.get("log_force", False))
         self.logger = self.Log.logger
         self.file_mode = file_mode
+        pieces_directory = args.get("pieces_directory", False)
+        if pieces_directory:
+            if not pieces_directory in sys.path:
+                sys.path.append(pieces_directory)
 
         if self.file_mode:
             self.play_as_file_mode()
@@ -86,6 +90,7 @@ class Puzzle(object):
 
                 return True, pass_data, messages
         
+
         inp = datetime.datetime.now()
         messages = []
         self.logger.debug("start\n")
@@ -118,7 +123,7 @@ class Puzzle(object):
         try:
             mod = importlib.import_module(hook_name)
             reload(mod)
-            logger.debug("module      : %s" % hook_name)
+            logger.debug("name        : %s (%s)" % (piece_data["name"], hook_name))
             logger.debug("description : %s" % piece_data["description"])
             if hasattr(mod, "_PIECE_NAME_"):
                 mod = getattr(mod, mod._PIECE_NAME_)(piece_data=piece_data, 

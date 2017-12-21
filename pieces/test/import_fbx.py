@@ -3,21 +3,21 @@ import os
 
 from puzzle.Piece import Piece
 
-_PIECE_NAME_ = "Test03"
+_PIECE_NAME_ = "ImportFBX"
 
-class Test03(Piece):
+class ImportFBX(Piece):
     def __init__(self, **args):
-        super(Test03, self).__init__(**args)
+        super(ImportFBX, self).__init__(**args)
         self.name = _PIECE_NAME_
 
     def execute(self):
         message = None
+        message = None
         if not self.filtered:
             self.logger.debug("filtered")
-            return True, self.pass_data, message
+            return True, self.pass_data, message        
 
-        message = "prop referenced: %s" % self.data["asset_path"]
+        message = "import fbx: %s" % self.data["fbx_path"]
         self.logger.debug(message)
-
+        
         return True, self.pass_data, message
-
