@@ -1,4 +1,4 @@
-# "puzzle" is the most simplest job platform for python tools.  
+# "puzzle" is the most simplest job framework for python tools.  
 
 ## description
 The objective of this module is to separate command from gui.  
