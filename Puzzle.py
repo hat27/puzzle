@@ -99,7 +99,7 @@ class Puzzle(object):
         self.logger.debug("start\n")
         for part in self.order:
             if not part in pieces:
-                logger.debug("")
+                self.logger.debug("")
                 continue
             data.setdefault(part, {})
             self.logger.debug("%s:" % part)
