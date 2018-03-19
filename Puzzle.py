@@ -20,6 +20,7 @@ class Puzzle(object):
 
         self.logger = self.Log.logger
         self.file_mode = file_mode
+        self.end = False
         pieces_directory = args.get("pieces_directory", False)
         if pieces_directory:
             if not pieces_directory in sys.path:
@@ -63,6 +64,9 @@ class Puzzle(object):
             if isinstance(data, list):
                 messages = []
                 for i, d in enumerate(data):
+                    if self.end:
+                        return False, pass_data, u"puzzle process stopped"
+
                     flg, pass_data, message = _play(piece_data=piece_data, 
                                                     data=d, 
                                                     part=part, 
@@ -71,11 +75,15 @@ class Puzzle(object):
                                                     )
                     
                     messages.extend(message)
+                    if not flg:
+                        self.end = True
 
                 return flg, pass_data, messages
             else:
                 messages = []
                 for piece_data in pieces.get(part, []):
+                    if self.end:
+                        return False, pass_data, u"puzzle process stopped"
                     flg, pass_data, message = self.fit(piece_data=piece_data, 
                                                        data=data,
                                                        pass_data=pass_data,
@@ -89,6 +97,7 @@ class Puzzle(object):
 
                         messages.append(message)
                     if not flg:
+                        self.end = True
                         return flg, pass_data, messages
 
                 return True, pass_data, messages
