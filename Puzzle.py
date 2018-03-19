@@ -110,7 +110,10 @@ class Puzzle(object):
             if not part in pieces:
                 self.logger.debug("")
                 continue
+            common = data.get("common", {})
             data.setdefault(part, {})
+            common.update(data[part])
+            data[part] = common
             self.logger.debug("%s:" % part)
             flg, pass_data, message = _play(piece_data=pieces[part], 
                                             data=data[part], 
