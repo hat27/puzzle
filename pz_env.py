@@ -1,4 +1,4 @@
-#-*- coding: utf8 -*-
+# -*- coding: utf8 -*-
 
 import os
 
@@ -19,8 +19,10 @@ except:
 if not _PLATFORM_:
     _PLATFORM_ = "win"
 
+
 def get_log_template():
     return os.path.normpath(os.path.join(__file__, "../log.template")).replace("\\", "/")
+
 
 def get_temp_directory(relative=""):
     path = "%s/puzzle/%s" % (_TEMP_PATH_, relative)
@@ -30,16 +32,21 @@ def get_temp_directory(relative=""):
         path = path[:-1]
     return path
 
+
 def get_log_directory():
     return get_temp_directory("log")
+
 
 def get_user_name():
     if "PUZZLE_USERNAME" in os.environ:
         return os.environ["PUZZLE_USERNAME"]
     return os.environ["USERNAME"]
 
+
 def get_platform():
     return _PLATFORM_
+
+
 
 if __name__ == "__main__":
     print get_log_template()
@@ -48,3 +55,5 @@ if __name__ == "__main__":
     print get_log_directory()
     print get_user_name()
     print get_platform()
+    path = "{}/python/KbnLib/site-packages/python27".format(os.environ["KANABAN_TOOL_PATH"])
+    print create_command("C:\\programfiles\\maya.exe", sys_path=path)
