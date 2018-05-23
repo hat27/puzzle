@@ -1,6 +1,8 @@
 #-*- coding: utf8 -*-
 
 import copy
+from . import PzLog
+
 class Piece(object):
     def __init__(self, **args):
         #self.data = args["data"]
@@ -8,12 +10,14 @@ class Piece(object):
         self.pass_data = args["pass_data"]
         self.piece_data = args["piece_data"]
         self.logger = args["logger"]
+        
         if "paint" in self.piece_data:
             for k, v in self.piece_data["paint"].items():
                 if v in self.data:
                     self.data[k] = self.data[v]
                     del self.data[v]
-        self.message = ""
+        self.header = ""
+        self.detail = ""
         self.filtered = True
         if "filters" in self.piece_data:
             for filter_ in self.piece_data["filters"]:
@@ -28,6 +32,5 @@ class Piece(object):
                         if v != self.data[k]:
                             self.filtered = False
 
-
     def execute(self, **args):
-        return True, self.pass_data, self.message
+        return True, self.pass_data, self.header, self.detail
