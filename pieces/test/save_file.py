@@ -11,16 +11,17 @@ class SaveFile(Piece):
         self.name = _PIECE_NAME_
 
     def execute(self):
-        message = None
+        header = None
+        detail = Noneaa
         if not self.filtered:
             self.logger.debug("filtered")
-            return True, self.pass_data, message
+            return True, self.pass_data, header, detail
         
         if True:
-            message = u"file saved: %s" % self.data["save_path"]
-            self.logger.debug(message)
+            header = u"file saved: %s" % self.data["save_path"]
+            self.logger.debug(header)
         else:
-            message = u"file save failed: %s" % self.data["save_path"]
-            self.logger.debug(message)
+            header = u"file save failed: %s" % self.data["save_path"]
+            self.logger.debug(header)
 
-        return True, self.pass_data, message
+        return True, self.pass_data, header, detail

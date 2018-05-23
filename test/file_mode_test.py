@@ -102,7 +102,11 @@ os.environ["__ALL_PIECES_PATH__"] = "%s/all_pieces.json" % root
 os.environ["__PUZZLE_DATA_PATH__"] = "%s/data.json" % root
 os.environ["__PIECES_KEYS__"] = "test_piece"
 
-x = Puzzle("log_to_temp_path", new=True, update_log_config=True)
+print os.environ["__ALL_PIECES_PATH__"]
+print os.environ["__PUZZLE_DATA_PATH__"]
+print os.environ["__PIECES_KEYS__"]
+
+x = Puzzle("log_to_temp_path", update_log_config=True)
 results = x.play_as_file_mode()
 
 for result in results:

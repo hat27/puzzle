@@ -11,13 +11,14 @@ class ReferenceProp(Piece):
         self.name = _PIECE_NAME_
 
     def execute(self):
-        message = None
+        header = None
+        detail = None
         if not self.filtered:
             self.logger.debug("filtered")
-            return True, self.pass_data, message
+            return True, self.pass_data, header, detail
 
-        message = "prop referenced: %s" % self.data["asset_path"]
-        self.logger.debug(message)
+        header = "prop referenced: %s" % self.data["asset_path"]
+        self.logger.debug(header)
 
-        return True, self.pass_data, message
+        return True, self.pass_data, header, detail
 

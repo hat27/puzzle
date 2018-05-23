@@ -11,13 +11,13 @@ class ImportFBX(Piece):
         self.name = _PIECE_NAME_
 
     def execute(self):
-        message = None
-        message = None
+        header = None
+        detail = None
         if not self.filtered:
             self.logger.debug("filtered")
-            return True, self.pass_data, message        
+            return True, self.pass_data, header, detail    
 
-        message = "import fbx: %s" % self.data["fbx_path"]
-        self.logger.debug(message)
+        header = "import fbx: %s" % self.data["fbx_path"]
+        self.logger.debug(header)
         
-        return True, self.pass_data, message
+        return True, self.pass_data, header, detail

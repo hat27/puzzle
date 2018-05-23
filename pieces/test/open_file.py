@@ -11,15 +11,18 @@ class OpenFile(Piece):
         self.name = _PIECE_NAME_
 
     def execute(self):
-        message = None
+        header = None
+        detail = ""
+
         if self.data["open_path"] is None:
             self.logger.debug("open new")
-            message = u"file open: new"
+            header = u"file open: new"
+            detail = u""
         elif os.path.exists(self.data["open_path"]):
-            message = u"file open: %s" % self.data["open_path"]
-            self.logger.debug(message)
+            header = u"file open: %s" % self.data["open_path"]
+            self.logger.debug(header)
         else:
-            message = u"file open: new"
-            self.logger.debug(message)
+            header = u"file open: new"
+            self.logger.debug(header)
 
-        return True, self.pass_data, message
+        return True, self.pass_data, header, detail
