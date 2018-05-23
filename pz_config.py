@@ -1,5 +1,6 @@
-#-*- coding: utf8 -*-
+# -*- coding: utf8 -*-
 
+import os
 import json
 import codecs
 try:
@@ -7,7 +8,13 @@ try:
 except:
   pass
 
+
 def read(path):
+    """
+    :type path: read file (.json, .yml)
+    :param path:
+    :return: info, data
+    """
     info, data = False, False
     if path.endswith(".yml"):
         data = yaml.load(codecs.open(path, "r", "utf8"))
@@ -19,7 +26,16 @@ def read(path):
 
     return info, data
 
+
 def save(path, data, tool_name="", category="", version=""):
+    """
+    :param path: save path (.json, .yml)
+    :param data:  save data
+    :param tool_name:  info
+    :param category:  info
+    :param version:  info
+    :return:  bool
+    """
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
 
