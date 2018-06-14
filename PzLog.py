@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 
 import os
-import sys
 
 import logging.config
 from logging import getLogger
@@ -11,67 +10,77 @@ from . import pz_env as pz_env
 
 class PzLog(object):
     def __init__(self, name=None, new=False, **args):
-        print name
+        u"""
+        ログのクラス
+        :param name: log名
+        :param new: ハンドラを全部削除してから新たに作成
+        :param args:
+        :param clear: logファイルの削除
+        :param use_default_config: 設定ファイルの初期化(log.template)
+        """
         if name is None:
             name = "unknown"
 
+        self.template = pz_env.get_log_template()
+        self.log_directory = args.get("log_directory", pz_env.get_log_directory())
+
         self.name = name
+        self.log_path = "{}/{}.log".format(self.log_directory, self.name)
+        self.config_path = "{}/config/{}.conf".format(self.log_directory, self.name)
 
-        if args.get("log_directory", False):
-            self.log_path = "{}/{}.log".format(args["log_directory"],
-                                                                self.name)
-        else:
-            self.log_path = "{}/{}.log".format(pz_env.get_log_directory(),
-                                                                self.name)
-
-        print("log_path: {}".format(self.log_path))
         if new:
-            previous_logger = getLogger(self.name)
-            for handler in previous_logger.handlers[::-1]:
+            self.remove_handler()
+
+        if args.get("clear", False):
+            os.remove(self.log_path)
+
+        replace_text = {"$NAME": self.name,
+                                "$SAVEFILE": self.log_path}
+
+        self.removed = False
+        if args.get("use_default_config", False):
+            if os.path.exists(self.config_path):
                 try:
-                    self.logger.removeHandler(handler)
+                    os.remove(self.config_path)
+                    print "removed: {}".format(self.config_path)
+                    self.removed = True
                 except:
                     pass
 
-        replace_log_config = args.get("replace_log_config", {})
-        replace_log_config["$NAME"] = name
-        path = self.get_log_config(replace_log_config,
-                                   args.get("update_config", True))
+        if not os.path.exists(self.config_path):
+            self.get_log_config(replace_text)
 
-        logging.config.fileConfig(path)
+        logging.config.fileConfig(self.config_path)
         self.logger = getLogger(self.name)
         self.logger.propagate = False
 
-        print(replace_log_config)
-
-    def get_log_config(self, replace_log_config, update_config=True):
+    def get_log_config(self, replace_log_config):
         def _replace(w, replace_log_config_):
             for k, v in replace_log_config_.items():
                 if k in w:
                     return w.replace(k, v)
             return w
 
-        path = "{}/config/{}.conf".format(pz_env.get_log_directory(), self.name)
-        # save_path = "{}/{}.log".format(pz_env.get_log_directory(), self.name)
-        print("config path: {}".format(path))
-        replace_log_config["$SAVEFILE"] = self.log_path
-        template = pz_env.get_log_template()
+        if not os.path.exists(os.path.dirname(self.config_path)):
+            os.makedirs(os.path.dirname(self.config_path))
 
-        if os.path.exists(path):
-            if not update_config:
-                return path
-
-        if not os.path.exists(os.path.dirname(path)):
-            os.makedirs(os.path.dirname(path))
-        with open(template, "r") as tx:
+        with open(self.template, "r") as tx:
             tx_s = tx.read().split("\n")
-            tx = open(path, "w")
+            tx = open(self.config_path, "w")
             new = [_replace(l, replace_log_config) for l in tx_s]
             tx.write("\n".join(new))
             tx.close()
 
-        return path
-
+    def remove_handler(self):
+        previous_logger = getLogger(self.name)
+        for handler in previous_logger.handlers[::-1]:
+            if hasattr(handler, "close"):
+                print("close: {}".format(handler))
+                handler.close()
+            try:
+                self.logger.removeHandler(handler)
+            except:
+                pass
 
 if __name__ == "__main__":
     import sys
