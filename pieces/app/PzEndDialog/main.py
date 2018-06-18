@@ -1,6 +1,8 @@
 #-*- coding: utf8 -*-
+
 import os
 import sys
+
 import datetime
 import subprocess
 
@@ -149,15 +151,21 @@ class PzEndDialog(Piece):
 
             cmd = u'"{}" "{}" "{}"'.format(os.environ["__PUZZLE_STANDALONE_PYTHON__"],
                                                           py_path, temp_file)
+
             self.logger.debug("temp_file: {}".format(temp_file))
             self.logger.debug("cmd: {}".format(cmd))
-            subprocess.Popen(cmd, shell=False)
+            res = subprocess.Popen(cmd,
+                                                  shell=False,
+                                                  stdout=subprocess.PIPE,
+                                                  stderr=subprocess.PIPE).communicate()
+            print res
 
         else:
-            app = QtWidgets.QApplication(sys.argv)
+            # TODO:  どんな環境でも立ち上がるようにする
+            #app = QtWidgets.QApplication(sys.argv)
             x = PzDialog(messages=self.pass_data["messages"])
             x.set_ui()
-            app.exec_()
+            #app.exec_()
 
         return True, self.pass_data, header, detail
 
