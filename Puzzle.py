@@ -298,7 +298,19 @@ def execute_command(app, **kwargs):
 
     if kwargs.get("create_bat", False):
         logger.debug("create bat_file: {}".format(kwargs["bat_file"]))
-        bat = "SET __PUZZLE_FILE_MODE__=True\n"
+        bat = ""
+        for extra in kwargs.get("extra_environ", []):
+            if extra["mode"] == "set":
+                bat += "SET {key}={value}\n".format(**extra)
+            elif extra["mode"] == "append":
+                tmp = os.environ.get(extra["key"], "")
+                if tmp == "":
+                    value = extra["value"]
+                else:
+                    value = "{};{}".format(tmp, extra["value"])
+                bat += "{}\n".format(value)
+
+        bat += "SET __PUZZLE_FILE_MODE__=True\n"
         bat += "SET __PUZZLE_DATA_PATH__={}\n".format(str(kwargs["data_path"]))
         bat += "SET __ALL_PIECES_PATH__={}\n".format(str(kwargs["piece_path"]))
         bat += "SET __PUZZLE_LOGGER_NAME__={}\n".format(str(kwargs["log_name"]))
