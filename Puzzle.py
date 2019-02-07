@@ -47,7 +47,7 @@ class Puzzle(object):
             self.logger = self.Log.logger
         else:
             self.logger = args["logger"]
-
+        
         for handler in self.logger.handlers[::-1]:
             if hasattr(handler, "baseFilename"):
                 self.logger.debug("baseFilename: {}".format(handler.baseFilename))
@@ -234,6 +234,7 @@ class Puzzle(object):
         detail = ""
         try:
             self.logger.debug(hook_name)
+            print
             mod = importlib.import_module(hook_name)
             reload(mod)
             if hasattr(mod, "_PIECE_NAME_"):
@@ -244,13 +245,18 @@ class Puzzle(object):
             else:
                 return False, pass_data, header, detail
             inp = datetime.datetime.now()
+            if not mod.filtered:
+                return True, pass_data, None, detail
+            
+            self.logger.debug(hook_name)
             results = mod.execute()
             self.logger.debug("{}\n".format(datetime.datetime.now() - inp))
             return results
 
         except:
             self.logger.debug(traceback.format_exc())
-            return False, pass_data, header, detail
+            print traceback.format_exc()
+            return False, pass_data, header, traceback.format_exc()
 
 
 def execute_command(app, **kwargs):
