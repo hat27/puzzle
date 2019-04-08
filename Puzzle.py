@@ -234,6 +234,7 @@ class Puzzle(object):
         detail = ""
         try:
             self.logger.debug(hook_name)
+            print
             mod = importlib.import_module(hook_name)
             reload(mod)
             if hasattr(mod, "_PIECE_NAME_"):
