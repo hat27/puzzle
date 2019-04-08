@@ -3,13 +3,13 @@
 import os
 import sys
 
-module_path = os.path.join(__file__, "../../../")
+module_path = os.path.normpath(os.path.join(__file__, "../../../"))
 if not module_path in sys.path:
   sys.path.append(module_path)
   
 sys.dont_write_bytecode = True
 
-import puzzle.env as env
+import puzzle.pz_env as env
 from puzzle.Puzzle import Puzzle
 
 
