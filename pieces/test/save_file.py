@@ -12,7 +12,7 @@ class SaveFile(Piece):
 
     def execute(self):
         header = None
-        detail = Noneaa
+        detail = None
         if not self.filtered:
             self.logger.debug("filtered")
             return True, self.pass_data, header, detail
