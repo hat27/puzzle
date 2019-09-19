@@ -30,7 +30,7 @@ class Piece(object):
         description = self.piece_data.get("description", "")
         self.details = []
         if description != u"":
-            self.details = ["", u"【{}】".format(description)]
+            self.details = ["", u"【{}】".format(description), self.piece_data["piece"], ""]
 
         self.filtered = True
         if "filters" in self.piece_data:

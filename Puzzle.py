@@ -234,7 +234,6 @@ class Puzzle(object):
         detail = ""
         try:
             self.logger.debug(hook_name)
-            print
             mod = importlib.import_module(hook_name)
             reload(mod)
             if hasattr(mod, "_PIECE_NAME_"):
@@ -248,7 +247,7 @@ class Puzzle(object):
             if not mod.filtered:
                 return True, pass_data, None, detail
             
-            self.logger.debug(hook_name)
+            # self.logger.debug(hook_name)
             results = mod.execute()
             self.logger.debug("{}\n".format(datetime.datetime.now() - inp))
             return results
