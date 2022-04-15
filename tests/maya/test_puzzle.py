@@ -4,7 +4,8 @@ import unittest
 import pprint
 pprint.pprint(os.environ)
 print("--------------------------------")
-print(os.listdir(os.environ["PUZZLE_REPO_PATH"]))
+print(__file__)
+print(os.listdir(__file__))
 print("--------------------------------")
 module_path = os.environ.get("PUZZLE_REPO_PATH")
 if module_path:
