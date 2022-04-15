@@ -3,6 +3,9 @@ import sys
 import unittest
 import pprint
 pprint.pprint(os.environ)
+print("--------------------------------")
+print(os.listdir(os.environ["PUZZLE_REPO_PATH"]))
+print("--------------------------------")
 module_path = os.environ.get("PUZZLE_REPO_PATH")
 if module_path:
     sys.path.append(module_path)
