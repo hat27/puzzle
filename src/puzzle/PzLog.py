@@ -42,7 +42,7 @@ class PzLog(object):
             if os.path.exists(self.config_path):
                 try:
                     os.remove(self.config_path)
-                    print "removed: {}".format(self.config_path)
+                    print("removed: {}".format(self.config_path))
                     self.removed = True
                 except:
                     pass
@@ -81,10 +81,3 @@ class PzLog(object):
                 self.logger.removeHandler(handler)
             except:
                 pass
-
-if __name__ == "__main__":
-    import sys
-
-    sys.path.append("G:/works")
-    x = PzLog("XXXXXX", new=True, update_config=True)
-    x.logger.debug("test")

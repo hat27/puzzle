@@ -1,4 +1,5 @@
-# -*- coding: utf8 -*-
+from __future__ import print_function
+from __future__ import unicode_literals
 
 import os
 import sys
@@ -7,12 +8,18 @@ import copy
 import datetime
 import traceback
 import importlib
-import logging
 import subprocess
 
 from . import PzLog
 from . import pz_env as pz_env
 from . import pz_config as pz_config
+
+try:
+    reload
+except NameError:
+    if hasattr(importlib, "reload"):
+        # for py3.4+
+        from importlib import reload
 
 
 class Puzzle(object):
@@ -254,5 +261,124 @@ class Puzzle(object):
 
         except:
             self.logger.debug(traceback.format_exc())
-            print traceback.format_exc()
+            print(traceback.format_exc())
             return False, pass_data, header, traceback.format_exc()
+
+
+def execute_command(app, **kwargs):
+    def _get_script(script_):
+        if script_ is None:
+            script_ = os.path.dirname(__file__)
+            script_ = "{}/PuzzleBoot.py".format(script_.replace("\\", "/"))
+        else:
+            script_ = script_.replace("/", "\\")
+
+        return script_
+
+    if "start_signal" in kwargs:
+        kwargs["start_signal"].emit()
+
+    script = _get_script(kwargs.get("script", None))
+    if app.endswith("mayapy.exe"):
+        cmd = r'"{}" "{}"'.format(app.replace("/", "\\"), script.replace("/", "\\"))
+
+    elif app.endswith("mayabatch.exe") or app.endswith("maya.exe"):
+        cmd = r'''"{}" -command "python(\\"execfile('{}')\\");"'''.format(app, script)
+
+    elif app.endswith("motionbuilder.exe"):
+        cmd = r'"{}" -suspendMessages -g 50 50 "{}"'.format(app.replace("/", "\\"), script.replace("/", "\\"))
+
+    elif app.endswith("3dsmax.exe"):
+        cmd = r'"{}" -U PythonHost {}'.format(app.replace("/", "\\"), script.replace("/", "\\"))
+
+    elif app.endswith("3dsmaxpy.exe"):
+        cmd = r'"{}" "{}"'.format(app.replace("/", "\\"), script.replace("/", "\\"))
+
+    elif app.endswith("maya.exe"):
+        sys_path = kwargs.get("sys_path", False)
+        if not sys_path:
+            return False
+        sys_path = sys_path.replace("\\", "/")
+        log_name = kwargs.get("log_name", "puzzle")
+
+        cmd = '"{}" -command '.format(app)
+        cmd += '"python(\\\"import sys;import os;sys.path.append(\\\\\\"{}\\\\\\");'.format(sys_path)
+        cmd += 'from puzzle.Puzzle import Puzzle;x=Puzzle(\\\\\\"{}\\\\\\", '.format(log_name)
+        cmd += 'file_mode=True, update_log_config=True)\\\");"'
+    else:
+        print("return: False")
+        return False
+    if kwargs.get("bat_file", False):
+        bat = "SET __PUZZLE_FILE_MODE__=True\n"
+        bat += "SET __PUZZLE_DATA_PATH__={}\n".format(str(kwargs["data_path"]))
+        bat += "SET __ALL_PIECES_PATH__={}\n".format(str(kwargs["piece_path"]))
+        bat += "SET __PUZZLE_LOGGER_NAME__={}\n".format(str(kwargs["log_name"]))
+        bat += "SET __PUZZLE_LOGGER_DIRECTORY__={}\n".format(str(kwargs.get("log_directory", False)))
+        bat += "SET __PIECES_KEYS__={}\n".format(str(kwargs["keys"]))
+        bat += "SET __PUZZLE_APP__={}\n".format(str(app))
+        bat += "SET __PUZZLE_PATH__={}\n".format(str(kwargs["sys_path"]))
+        bat += "SET __PUZZLE_HOOKS__={}\n".format(str(kwargs["hook_path"]))
+        bat += "SET __PUZZLE_MESSAGE_OUTPUT__={}\n".format(str(kwargs["message_output"]))
+        if "pass_path" in kwargs:
+            bat += "SET __PUZZLE_PASS_PATH__={}\n".format(str(kwargs["pass_path"]))
+        
+        if "order" in kwargs:
+            bat += "SET __PUZZLE_ORDER__={}\n".format(str(kwargs["order"]))
+        
+        if "result" in kwargs:
+            bat += "SET __PUZZLE_RESULT__={}\n".format(str(kwargs["result"]))
+            
+        bat += "SET __PUZZLE_CLOSE_APP__=True\n"
+        if "standalone_python" in kwargs:
+            bat += "SET __PUZZLE_STANDALONE_PYTHON__={}\n".format(str(kwargs["standalone_python"]))
+        bat += cmd
+
+        if not os.path.exists(os.path.dirname(kwargs["bat_file"])):
+            os.makedirs(os.path.dirname(kwargs["bat_file"]))
+        tx = open(kwargs["bat_file"], "w")
+        tx.write(bat)
+        tx.close()
+
+        if kwargs.get("bat_start", False):
+            res = subprocess.Popen(kwargs["bat_file"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False).communicate()
+            for r in res:
+                print(r)
+
+    else:
+        env_copy = os.environ.copy()
+        env_copy["__PUZZLE_FILE_MODE__"] = "True"
+        env_copy["__PUZZLE_DATA_PATH__"] = str(kwargs["data_path"])
+        env_copy["__ALL_PIECES_PATH__"] = str(kwargs["piece_path"])
+        env_copy["__PUZZLE_LOGGER_NAME__"] = str(kwargs["log_name"])
+        env_copy["__PUZZLE_LOGGER_DIRECTORY__"] = str(kwargs.get("log_directory", False))
+        env_copy["__PIECES_KEYS__"] = str(kwargs["keys"])
+        env_copy["__PUZZLE_APP__"] = str(app)
+        env_copy["__PUZZLE_PATH__"] = str(kwargs["sys_path"])
+        env_copy["__PUZZLE_HOOKS__"] = str(kwargs["hook_path"])
+        env_copy["__PUZZLE_MESSAGE_OUTPUT__"] = str(kwargs["message_output"])
+        if "pass_path" in kwargs:
+            env_copy["__PUZZLE_PASS_PATH__"] = str(kwargs["pass_path"])
+        
+        if "order" in kwargs:
+            env_copy["__PUZZLE_ORDER__"] = str(kwargs["order"])
+        
+        if "result" in kwargs:
+            env_copy["__PUZZLE_RESULT__"] = str(kwargs["result"])
+
+
+        env_copy["__PUZZLE_CLOSE_APP__"] = "True"
+        if "standalone_python" in kwargs:
+            env_copy["__PUZZLE_STANDALONE_PYTHON__"] = str(kwargs["standalone_python"])
+
+        res = subprocess.Popen(cmd, env=env_copy, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False).communicate()
+        for r in res:
+            try:
+                print(r)
+            except:
+                print("failed")
+
+    if "end_signal" in kwargs:
+        kwargs["end_signal"].emit(kwargs)
+
+    return cmd
+

@@ -24,4 +24,5 @@ if __STANDALONE__:
     except:
         pass
     os._exit(0)
-    print "END"
+    print("END")
+

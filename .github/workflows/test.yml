@@ -1,0 +1,46 @@
+name: mayaExampleCI
+
+on:
+  push:
+    branches_ignore:
+      - master
+
+jobs:
+  maya2019:
+    needs: changes
+    if: ${{ needs.changes.outputs.app1 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run Unittests
+        uses: docker://mottosso/maya:2019
+        with:
+          args: /usr/autodesk/maya/bin/mayapy -m unittest discover -s ./tests/maya -v
+
+  maya2020:
+    needs: changes
+    if: ${{ needs.changes.outputs.app1 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run Unittests
+        uses: docker://mottosso/maya:2020
+        with:
+          args: /usr/autodesk/maya/bin/mayapy -m unittest discover -s ./tests/maya -v
+
+  maya2022:
+    needs: changes
+    if: ${{ needs.changes.outputs.app1 == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run Unittests
+        uses: docker://mottosso/maya:2022
+        with:
+          args: /usr/autodesk/maya/bin/mayapy -m unittest discover -s ./tests/maya -v
