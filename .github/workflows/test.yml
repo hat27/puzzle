@@ -7,8 +7,6 @@ on:
 
 jobs:
   maya2019:
-    needs: changes
-    if: ${{ needs.changes.outputs.app1 == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -20,8 +18,6 @@ jobs:
           args: /usr/autodesk/maya/bin/mayapy -m unittest discover -s ./tests/maya -v
 
   maya2020:
-    needs: changes
-    if: ${{ needs.changes.outputs.app1 == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -33,8 +29,6 @@ jobs:
           args: /usr/autodesk/maya/bin/mayapy -m unittest discover -s ./tests/maya -v
 
   maya2022:
-    needs: changes
-    if: ${{ needs.changes.outputs.app1 == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
