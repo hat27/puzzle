@@ -1,7 +1,9 @@
 import os
 import sys
 import unittest
-import pprint
+
+import maya.standalone
+maya.standalone.initialize()
 
 module_path = os.environ.get("PUZZLE_REPO_PATH")
 if module_path:
