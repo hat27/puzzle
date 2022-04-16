@@ -1,3 +1,5 @@
+![Tests](https://github.com/hat27/puzzle/actions/workflows/tests.yml/badge.svg)
+
 # "puzzle" is the most simplest job framework for python tools.  
 もっともシンプルなpythonジョブフレームワーク
 
