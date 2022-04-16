@@ -1,4 +1,3 @@
-#-*-coding: utf8 -*-
 import os
 import sys
 import json
@@ -24,4 +23,3 @@ if __STANDALONE__:
     except:
         pass
     os._exit(0)
-    print "END"

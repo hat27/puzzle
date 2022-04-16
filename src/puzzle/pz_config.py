@@ -17,12 +17,14 @@ def read(path):
     """
     info, data = False, False
     if path.endswith(".yml"):
-        data = yaml.load(codecs.open(path, "r", "utf8"))
-        return data["info"], data["data"]
+        with codecs.open(path, "r", "utf8") as f:
+            data = yaml.load(f, Loader=yaml.SafeLoader)
+            return data["info"], data["data"]
 
     elif path.endswith(".json"):
-        data = json.load(codecs.open(path, "r"), "utf8")
-        return data["info"], data["data"]
+        with codecs.open(path, "r", encoding="utf8") as f:
+            data = json.load(f)
+            return data["info"], data["data"]
 
     return info, data
 

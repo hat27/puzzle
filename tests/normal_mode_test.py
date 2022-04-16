@@ -98,10 +98,8 @@ data = {
 os.environ["__PUZZLE_PATH__"] = module_path
 x = Puzzle("sample", new=True, update_log_config=True)
 results = x.play(pieces, data, {})
-print
-print
 for result in results:
-  print result
+  print(result)
 
 app = "C:/Program Files/Autodesk/Maya2015\\bin\\mayapy.exe".replace("/", "\\")
 
@@ -114,5 +112,3 @@ dic = {'piece_path': 'K:/staff/hattori/KbnToolBox/config/pipeline/env/PzPieces/_
        'message_output': 'K:/staff/hattori/KbnToolBox/config/log/Hattori/message_log.json'}
 
 execute_command(app, **dic)
-
-

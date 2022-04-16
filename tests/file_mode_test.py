@@ -6,7 +6,7 @@ import sys
 module_path = os.path.normpath(os.path.join(__file__, "../../../"))
 if not module_path in sys.path:
   sys.path.append(module_path)
-  
+
 sys.dont_write_bytecode = True
 
 import puzzle.pz_env as env
@@ -95,20 +95,20 @@ data = {
 
 root = env.get_temp_directory("sample")
 import json
-json.dump({"data": data, "info": {}}, open("%s/data.json" % root, "w"), "utf8", indent=4)
-json.dump({"data": all_pieces, "info": {}}, open("%s/all_pieces.json" % root, "w"), "utf8", indent=4)
+json.dump({"data": data, "info": {}}, open("%s/data.json" % root, "w", encoding="utf8"), indent=4)
+json.dump({"data": all_pieces, "info": {}}, open("%s/all_pieces.json" % root, "w", encoding="utf8"), indent=4)
 os.environ["__PUZZLE_FILE_MODE__"] = "True"
 os.environ["__ALL_PIECES_PATH__"] = "%s/all_pieces.json" % root
 os.environ["__PUZZLE_DATA_PATH__"] = "%s/data.json" % root
 os.environ["__PIECES_KEYS__"] = "test_piece"
 
-print os.environ["__ALL_PIECES_PATH__"]
-print os.environ["__PUZZLE_DATA_PATH__"]
-print os.environ["__PIECES_KEYS__"]
+print(os.environ["__ALL_PIECES_PATH__"])
+print(os.environ["__PUZZLE_DATA_PATH__"])
+print(os.environ["__PIECES_KEYS__"])
 
 x = Puzzle("log_to_temp_path", update_log_config=True)
 results = x.play_as_file_mode()
 
 for result in results:
-  print result
+  print(result)
 
