@@ -3,7 +3,7 @@
 import os
 
 import logging.config
-from logging import getLogger
+from logging import getLogger, DEBUG, INFO, CRITICAL, ERROR
 
 from . import pz_env as pz_env
 
@@ -42,7 +42,7 @@ class PzLog(object):
             if os.path.exists(self.config_path):
                 try:
                     os.remove(self.config_path)
-                    print "removed: {}".format(self.config_path)
+                    print("removed: {}".format(self.config_path))
                     self.removed = True
                 except:
                     pass
@@ -52,6 +52,16 @@ class PzLog(object):
 
         logging.config.fileConfig(self.config_path)
         self.logger = getLogger(self.name)
+        level = args.get("logger_level", "debug")
+        if level == "debug":
+            self.logger.setLevel(DEBUG)
+        elif level == "info":
+            self.logger.setLevel(INFO)
+        elif level == "error":
+            self.logger.setLevel(ERROR)
+        elif level == "critical":
+            self.logger.setLevel(CRITICAL)
+
         self.logger.propagate = False
 
     def get_log_config(self, replace_log_config):
@@ -81,10 +91,3 @@ class PzLog(object):
                 self.logger.removeHandler(handler)
             except:
                 pass
-
-if __name__ == "__main__":
-    import sys
-
-    sys.path.append("G:/works")
-    x = PzLog("XXXXXX", new=True, update_config=True)
-    x.logger.debug("test")

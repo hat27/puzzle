@@ -25,7 +25,8 @@ class Piece(object):
 
                 elif v in self.data:
                     self.data[k] = self.data[v]
-                    # del self.data[v]
+                    del self.data[v]
+
         self.header = ""
         description = self.piece_data.get("description", "")
         self.details = []
@@ -36,7 +37,7 @@ class Piece(object):
         if "filters" in self.piece_data:
             for filter_ in self.piece_data["filters"]:
                 for k, v in filter_.items():
-                    if not k in self.data:
+                    if k not in self.data:
                         self.filtered = False
                         break
                     if isinstance(v, list):

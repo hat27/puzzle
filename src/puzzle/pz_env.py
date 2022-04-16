@@ -45,15 +45,3 @@ def get_user_name():
 
 def get_platform():
     return _PLATFORM_
-
-
-
-if __name__ == "__main__":
-    print get_log_template()
-    print get_temp_directory()
-    print get_temp_directory("temp/test")
-    print get_log_directory()
-    print get_user_name()
-    print get_platform()
-    path = "{}/python/KbnLib/site-packages/python27".format(os.environ["KANABAN_TOOL_PATH"])
-    print create_command("C:\\programfiles\\maya.exe", sys_path=path)
