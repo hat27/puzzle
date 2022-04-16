@@ -7,10 +7,13 @@ maya.standalone.initialize()
 
 import maya.cmds as cmds
 
-module_path = os.environ.get("PUZZLE_REPO_PATH")
-if module_path:
-    sys.path.append(module_path)
-    sys.path.append(os.path.normpath(os.path.join(module_path, "../tests/data")))
+MODULE_PATH = os.environ.get("PUZZLE_REPO_PATH")
+if MODULE_PATH:
+    sys.path.append(MODULE_PATH)
+
+PIECES_PATH = os.environ.get("PUZZLE_PIECE_PATH")
+if not PIECES_PATH and MODULE_PATH:
+    PIECES_PATH = os.path.normpath(os.path.join(MODULE_PATH, "../tests/data"))
 
 from unittest import TestCase
 from puzzle.Puzzle import Puzzle, execute_command
@@ -34,7 +37,10 @@ class TestSimple(TestCase):
         }
 
     def test_normal_each(self):
-      puzzle = Puzzle()
+      if PIECES_PATH:
+        puzzle = Puzzle(pieces_directory=PIECES_PATH)
+      else:
+        puzzle = Puzzle()
       data = {
         "primary": {
           "start": 0, 
