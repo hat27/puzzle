@@ -18,15 +18,17 @@ class CreateSphere(Piece):
         self.name = _PIECE_NAME_
 
     def execute(self):
+        self.logger.info("this is info level log")
         self.header = "create shpere"
-
         x = cmds.polySphere(name=self.data["name"])
         if "move" in self.data:
             cmds.move(*self.data["move"])
+            self.logger.debug("move: {}".format(self.data["move"]))
 
         return True, self.pass_data, self.header, self.details
 
 if __name__ == "__main__":
-    x = CreateSphere()
+    data = {"name": "hoge"}
+    x = CreateSphere(data=data)
     print(x.execute())
     

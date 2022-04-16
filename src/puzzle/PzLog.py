@@ -3,7 +3,7 @@
 import os
 
 import logging.config
-from logging import getLogger
+from logging import getLogger, DEBUG, INFO, CRITICAL, ERROR
 
 from . import pz_env as pz_env
 
@@ -52,6 +52,16 @@ class PzLog(object):
 
         logging.config.fileConfig(self.config_path)
         self.logger = getLogger(self.name)
+        level = args.get("logger_level", "debug")
+        if level == "debug":
+            self.logger.setLevel(DEBUG)
+        elif level == "info":
+            self.logger.setLevel(INFO)
+        elif level == "error":
+            self.logger.setLevel(ERROR)
+        elif level == "critical":
+            self.logger.setLevel(CRITICAL)
+
         self.logger.propagate = False
 
     def get_log_config(self, replace_log_config):

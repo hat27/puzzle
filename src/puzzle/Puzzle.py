@@ -47,13 +47,15 @@ class Puzzle(object):
 
         if not args.get("logger", False):
             self.Log = PzLog.PzLog(name=self.name,
-                                                 new=args.get("new", False),
-                                                 log_directory=log_directory,
-                                                 use_default_config=args.get("use_default_config", False))
+                                   new=args.get("new", False),
+                                   log_directory=log_directory,
+                                   use_default_config=args.get("use_default_config", False), 
+                                   logger_level=args.get("logger_level", "debug"))
 
             self.logger = self.Log.logger
         else:
             self.logger = args["logger"]
+        
         
         for handler in self.logger.handlers[::-1]:
             if hasattr(handler, "baseFilename"):
