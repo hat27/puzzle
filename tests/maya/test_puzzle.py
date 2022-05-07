@@ -118,7 +118,7 @@ class TestLoggerLevel(TestCase):
       self.assertEqual(cmds.objExists("c"), True)
       
       self.assertEqual(cmds.getAttr("a.tx"), 10)
-      self.assertEqual(cmds.getAttr("b.ty"), 12)
+      self.assertEqual(cmds.getAttr("b.ty"), 10)
       self.assertEqual(cmds.getAttr("c.tz"), 10)
 
 if __name__ == "__main__":
